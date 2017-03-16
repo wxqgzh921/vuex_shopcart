@@ -8,3 +8,9 @@ export const CHECK_DB ='CHECK_DB';
 export const CREATE_DB ='CREATE_DB';
 //更新本地数据
 export const UPDATE_LOCAL = 'UPDATE_LOCAL';
+//清空本地数据
+export const CLEAR_LOCAL= ' CLEAR_LOCAL';
+//删除购物车
+export const DELETE_DB ='DELETE_DB'
+//更新当前物品在购物车的状态
+export const UPDATE_CUR_SHOP_STATUS = 'UPDATE_CUR_SHOP_STATUS';

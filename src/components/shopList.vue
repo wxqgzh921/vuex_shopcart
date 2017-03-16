@@ -16,10 +16,10 @@
 					<td>{{ shop.id }}</td>
 					<td>{{ shop.name }}</td>
 					<td>{{ shop.price }}</td>
-					<td>{{ shop.num || '' }}</td>
+					<td>{{ shop.num || ' '}}</td>
 					<td>
-						<div @click="add_db(shop)" class="btn btn-info">{{ shop.num ? '+' : '加入购物车'}}</div>
-						<div @click="reduce_db(shop)" class="btn btn-waring" v-if="shop.num && shop.num>0">-</div>
+						<div @click="add_db(shop)" class="btn btn-info">{{ shop.num  ? '+' : '加入购物车'}}</div>
+						<div @click="reduce_db(shop)" class="btn btn-warning" v-if="shop.num && shop.num>0">-</div>
 					</td>
 				</tr>
 			</tbody>
@@ -56,19 +56,20 @@
 			 /**
 	         * 初始化时把购物车的菜品数量绑定到菜品列表中
 	         */
-			var list = this.$store.state.cart.cartList;
-			for(var i=0;i < this.shop_list.length;i++){
-				for(var j=0; j<list.length;j++){
-					if(list[j].id == this.shop_list[i].id ){
-						//这种赋值属性的方式，初始化完成时，无法从state同步到列表
+	        var list = this.$store.state.cart.cartList;
+	        for (var i = 0; i < this.shop_list.length; i++) {
+	            for (var j = 0; j < list.length; j++) {
+	                if (list[j].id == this.shop_list[i].id) {
+	
+	                    //这种赋值属性的方式，初始化完成时，无法从state同步到列表
 	                    // this.$set(this.shop_list[i], 'num', list[j].num);
 	
 	                    //通过直接赋值对象，造成对象引用，从而改变state时,达到自动同步列表数据目的
-						this.$set(this.shop_list,i,list[j]);
-						break;
-					}
-				}
-			}
+	                    this.$set(this.shop_list, i, list[j]);
+	                    break;
+	                }
+	            }
+	        }
 		},
 		methods:{
 			/**
@@ -81,14 +82,22 @@
 	        	
 	        	//如果存在,先自增当前菜品中的num，再设置购物车的数量
             	//如果不存在，直接往购物车中push一个新的菜品
-	        	if(this.$store.state.cart.cartIndex != -1){
+	        	if(this.$store.state.cart.curIndex != -1){
 	        		this.$store.dispatch('add_db');
 	        	}else{
 	        		this.$set(shop,'num',1);
 	        		this.$store.dispatch('create_db',{shop});
 	        	}
+	        },
+	        reduce_db(shop){
+	        	var id = shop.id;
+	        	this.$store.dispatch('check_db',{
+	        		id
+	        	});
+	        	shop.num = parseInt(shop.num);
+	        	this.$store.dispatch('reduce_db');
 	        }
-		}
+	    }
 	}
 </script>
 
